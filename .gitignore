@@ -87,3 +87,15 @@ ENV/
 
 # Rope project settings
 .ropeproject
+
+
+
+# self add
+
+/flask/
+
+*.jpg
+*.png
+*.pyc
+*.log
+*.swp
