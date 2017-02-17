@@ -1,0 +1,48 @@
+.accordion
+{
+	position:relative;
+	overflow:hidden;
+}
+
+.accordion .panel
+{
+	background-color:#000;
+	background-image:url(../images/bg/preloader.gif);
+	background-repeat:no-repeat;
+	background-position:center center;
+	position:absolute;
+	overflow:hidden;
+}
+
+
+.accordion .preloader
+{
+	background:url(../images/bg/preloader2.gif) no-repeat;
+	width:62px;
+	height:14px;
+	position:absolute;
+	z-index:15;
+}
+
+
+.accordion .caption
+{
+	overflow:hidden;
+	position:absolute;
+	z-index:20;
+}
+
+
+
+.accordion .caption p
+{
+	color:#FFF;
+	margin:0px;
+	padding:10px;
+}
+
+
+.accordion .caption p a
+{
+	color:#FFF;
+}

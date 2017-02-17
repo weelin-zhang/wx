@@ -1,0 +1,15 @@
+{% extends 'admin/base.html' %}
+
+{% block content  %}
+
+<form action='/admin/login/' method='POST'>
+    <h1>请登录</h1>
+    <span>username:</span>
+    <input type='text' name='username' placeholder='请输入用户名'/>
+    <span>password:</span>
+    <input type='password' name='password' placeholder='请输入密码'/> <span class="status_message">{{message}}</span>
+    </br></br>
+    <input type='submit' value='提交' style="width:50px">
+    
+</form>
+{% endblock %}

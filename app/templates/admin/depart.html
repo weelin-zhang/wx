@@ -1,0 +1,12 @@
+{% extends 'admin/base.html' %}
+
+{% block content  %}
+
+<form action='/admin/depart/' method='POST'>
+    <h1>设备厂商管理</h1>
+    <span>设备厂商:</span><input type='text' name='departtype' placeholder='设备厂商'/>
+    </br>
+    <input type='submit' value='添加' style="width:50px">
+    
+</form>
+{% endblock %}

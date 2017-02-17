@@ -1,0 +1,29 @@
+{% extends 'admin/base.html' %}
+
+{% block content  %}
+    <h1>故障及处理方法</h1>
+    <table border=1px;>
+    {% if record %}
+        <tr>
+            <th>点击删除</th>
+            <th>点击更新</th>
+            <th>设备类型</th>
+            <th>故障说明</th>
+            <th>解决方案OR代码</th>
+        </tr>
+        {% for data in datas %}
+            {% for solution in data.solutions %}
+            <tr>
+		<td><a href="/admin/deletesolution/{{solution.id}}/" onclick="return confirm('确定将此记录删除?')">删除</a></td> 
+                <td><a href="/admin/editsolution/{{solution.id}}/">编辑</a></td>
+                <td>{{data.departname}}</td>
+                <td>{{solution.troublename}}</td>
+                <td>{{solution.solution}}</td>
+            </tr>
+            {% endfor %}    
+        {% endfor %}
+	{% else %}
+	    <p>还没有任何记录,<a href="/admin/addsolution/">现在添加</a></p>    
+    {% endif %}
+    </table>
+{% endblock %}

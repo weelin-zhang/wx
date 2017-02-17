@@ -1,0 +1,21 @@
+{% extends 'admin/base.html' %}
+
+{% block content  %}
+
+<form action='/admin/addsolution/' method='POST'>
+    <h1>添加故障以及解决方案</h1>
+    <span>设备厂商:</span>
+    <select name="select_factory">
+        {% for factory in factories %}
+	    <option value={{factory.id}}>{{factory.departname}}
+        {% endfor  %}
+    </select>
+    <p>具体故障:</p>
+    <textarea rows="4" cols="100" name="p_troublename"></textarea>
+    <p>解决方案&代码:</p>
+    <textarea rows="10" cols="100" name="p_solution"></textarea>
+    </br></br>
+    <input type='submit' value='提交' style="width:50px">
+    
+</form>
+{% endblock %}

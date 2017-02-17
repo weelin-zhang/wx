@@ -1,0 +1,14 @@
+{% extends 'admin/base.html' %}
+
+{% block content  %}
+
+<form action='/admin/updatesolution/' method='POST'>
+    <h1>故障处理方法更新</h1>
+    <p>具体故障:</p>
+    <textarea rows="4" cols="80" name="p_troublename">{{Solution.id}}_{{Solution.troublename}}</textarea>
+    <p>解决方案&代码:</p>
+    <textarea rows="10" cols="100" name="p_solution">{{Solution.solution}}</textarea>
+    </br></br>
+    <input type='submit' value='点击更新' style="width:50px"> 
+</form>
+{% endblock %}
