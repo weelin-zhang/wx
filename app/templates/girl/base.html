@@ -3,8 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>{{title}}</title>
+    <audio style="margin-right:100px" autoplay="autoplay" controls="controls"loop="loop" preload="auto" src="/static/dujiajiyi.mp3"></audio>    
+<style>
+a {
+	text-decoration:none;
+}
+</style>
 </head>
-<body>
+<body style="background-image: url(/static/images/bg.jpg); ">
     {% block content %}
     {% endblock %}
 </body>

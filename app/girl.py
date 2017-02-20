@@ -10,6 +10,12 @@ girl = Blueprint('girl',__name__)
 def index():
     return render_template('girl/index.html')
 
+
+@girl.route('/selfcheck/')
+def check():
+    return render_template('girl/selfcheck.html',title="For Love")
+
+
 @girl.route('/d3/')
 @login_required
 def d3():

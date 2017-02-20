@@ -7,14 +7,15 @@ app.register_blueprint(admin,url_prefix='/admin')
 import re,time,json
 from .plugs.face import ImageInfoFormat 
 from .plugs import send,receive,search_music,weather,qiushibaike
+from .plugs import models
 pic_info_save_dict={}
 
 app.register_blueprint(admin,url_prefix='/admin')
 app.register_blueprint(girl,url_prefix='/girl')
 
-
 @app.route('/')
 def home():
+    #obj = models.Session.query(models.Solution).first()
     return redirect('/admin/')
 
 @app.route('/test/',methods=['GET'])
@@ -68,7 +69,23 @@ def hander():
 		if not music_info:return send.send_text(touser,fromuser,'兄弟,有这首歌吗-_-')
 		return send.send_music(touser,fromuser,music_info[1],music_info[1],'zbMMCEVEvO0py0JHAHKRIMQBTU0_07436wi2fLYqYwmKnVYpeoO3wkaCMLyfPJPn',music_info[0]+'_%s'%music_info[2],music_info[3])
 	    elif user_key in app.config['DEVICE_KEYS']:
-		return send.send_text(touser,fromuser,'数据库没有数据')
+                trouble_key = user_input_l[1]
+		if trouble_key == 'all':
+		    all_objs = models.Session.query(models.Solution).order_by(models.Solution.type_id).all()
+		    result = ''
+		    if not all_objs:
+		        return send.send_text(touser,fromuser,'无相关记录')
+		    for index,obj in enumerate(all_objs,1):
+                        result=result+str(index)+'-'+obj.troublename+'for'+obj.type.departname+'\n'+obj.solution+'\n'*2
+                    return send.send_text(touser,fromuser,result)
+		objs = models.Session.query(models.Solution).filter(models.Solution.troublename.like('%{}%'.format(trouble_key))).order_by(models.Solution.id).all()
+		if not objs:
+		    return send.send_text(touser,fromuser,'无相关记录,获取全部方案请输入4+空格+all')
+		result = '与"{}"相关的故障解决方法\n'.format(trouble_key)
+		for index,obj in enumerate(objs,1):
+		    result=result+str(index)+'-'+obj.troublename+'for'+obj.type.departname+'\n'+obj.solution+'\n'*2	
+		return send.send_text(touser,fromuser,result)
+		#return send.send_text(touser,fromuser,'数据库没有数据')
 	    else:
 		return send.send_text(touser,fromuser,app.config['REMIND_INFO'])
 	    return 'success'
@@ -99,4 +116,4 @@ def hander():
 	    return send.send_text(touser,fromuser,'链接消息')	
 
 
-
+#obj = Session.query(Solution).first()
