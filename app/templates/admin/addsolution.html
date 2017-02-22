@@ -6,16 +6,21 @@
     <h1>添加故障以及解决方案</h1>
     <span>设备厂商:</span>
     <select name="select_factory">
+	<option value=0>无
         {% for factory in factories %}
 	    <option value={{factory.id}}>{{factory.departname}}
         {% endfor  %}
     </select>
-    <p>具体故障:</p>
+    {% for message in get_flashed_messages() %}
+               <span style="color:red;font-weight:bold;font-size:12px"> {{ message }}</span>
+   {% endfor %} 
+    <p style="background-color:red;color:white;width:200px;">具体故障:</p>
     <textarea rows="4" cols="100" name="p_troublename"></textarea>
-    <p>解决方案&代码:</p>
+    <p style="background-color:green;color:white;width:200px;">解决方案&代码:</p>
     <textarea rows="10" cols="100" name="p_solution"></textarea>
     </br></br>
     <input type='submit' value='提交' style="width:50px">
-    
+    <button><a href="/admin/showsolution/" style="color:green">查看已添加项</a></button>
 </form>
+
 {% endblock %}

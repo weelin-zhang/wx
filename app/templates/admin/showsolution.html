@@ -2,6 +2,8 @@
 
 {% block content  %}
     <h1>故障及处理方法</h1>
+    <button style="margin-bottom:10px"><a href="/admin/addsolution/">新增</a></button>
+    <button style="margin-bottom:10px"><a href="/admin/" style="color:#00EC00">首页</a></button>
     <table border=1px;>
     {% if record %}
         <tr>
@@ -13,8 +15,8 @@
         </tr>
         {% for data in datas %}
             {% for solution in data.solutions %}
-            <tr>
-		<td><a href="/admin/deletesolution/{{solution.id}}/" onclick="return confirm('确定将此记录删除?')">删除</a></td> 
+            <tr class="{{data.style}}">
+		<td><a href="/admin/deletesolution/{{solution.id}}/" onclick="return confirm('确定将此记录删除?')" style="color:red;font-weight:blod">删除</a></td> 
                 <td><a href="/admin/editsolution/{{solution.id}}/">编辑</a></td>
                 <td>{{data.departname}}</td>
                 <td>{{solution.troublename}}</td>

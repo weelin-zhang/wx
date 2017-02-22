@@ -51,11 +51,16 @@ def add():
         return render_template('admin/addsolution.html',title='Add Solution',factories=factories)
     
     p_factory_id = request.form.get('select_factory',None)
+    print p_factory_id
+    if not int(p_factory_id):
+	flash(u'请选择设备供应商')
+    	return render_template('admin/addsolution.html',title='Add Solution',factories=factories)
     p_troublename = request.form.get('p_troublename',None)
     p_solution = request.form.get('p_solution',None)
     solution_obj = Solution(troublename=p_troublename,solution=p_solution,type_id=p_factory_id)
     db.session.add(solution_obj)
     db.session.commit()
+    flash(u'添加成功')
     return render_template('admin/addsolution.html',title='Add Solution',factories=factories) 
    
 @admin.route('/editsolution/<int:solution_id>/')
@@ -94,11 +99,12 @@ def show():
     data_l = []
     solution_d={}
     departs = DepartmentType.query.all()
-    for depart in departs:
+    for styleindex,depart in enumerate(departs,1):
         record_is_exists = record_is_exists or len(depart.solutions)>0 
         solution_d = {}
         solution_d['departname'] = depart.departname
         solution_d['solutions'] = depart.solutions
+        solution_d['style'] = 'style_'+str(styleindex)
         data_l.append(solution_d)
-    print record_is_exists
+    #print record_is_exists
     return render_template('admin/showsolution.html',title="Show Solutions",datas=data_l,record=record_is_exists)

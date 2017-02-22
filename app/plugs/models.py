@@ -48,6 +48,8 @@ Session = Session_class()#生成Session_class实例
 
 if __name__=='__main__':
     obj = Session.query(Solution).first()
+    ob = Session.query(Solution).filter(Solution.type.id==1).first()
+    print ob.id
     print obj
     #print dir(Session)
     try:

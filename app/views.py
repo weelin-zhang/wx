@@ -78,10 +78,16 @@ def hander():
 		    for index,obj in enumerate(all_objs,1):
                         result=result+str(index)+'-'+obj.troublename+'for'+obj.type.departname+'\n'+obj.solution+'\n'*2
                     return send.send_text(touser,fromuser,result)
-		objs = models.Session.query(models.Solution).filter(models.Solution.troublename.like('%{}%'.format(trouble_key))).order_by(models.Solution.id).all()
+		#order_by factory
+		factories_l = (i.departname for i in models.Session.query(models.DepartmentType).all())
+		if trouble_key in factories_l:
+		    depart = models.Session.query(models.DepartmentType).filter(models.DepartmentType.departname==trouble_key).first()
+		    objs = depart.solutions
+		else:
+		    objs = models.Session.query(models.Solution).filter(models.Solution.troublename.like('%{}%'.format(trouble_key))).order_by(models.Solution.id).all()
 		if not objs:
 		    return send.send_text(touser,fromuser,'无相关记录,获取全部方案请输入4+空格+all')
-		result = '与"{}"相关的故障解决方法\n'.format(trouble_key)
+		result = '***与"{}"相关的故障解决方法***\n\n'.format(trouble_key)
 		for index,obj in enumerate(objs,1):
 		    result=result+str(index)+'-'+obj.troublename+'for'+obj.type.departname+'\n'+obj.solution+'\n'*2	
 		return send.send_text(touser,fromuser,result)
