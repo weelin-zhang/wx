@@ -1,13 +1,13 @@
 {% extends 'admin/base.html' %}
 
 {% block content  %}
-
-<h1>后台管理首页</h1>
-    <ul>
+    <div style="margin-left:10px;">
+    <p style="margin-left:20px;background-color:red;width:50%;color:white;font-size:25px;">故障处理管理页</p>
+    <ul style="">
 	<li><a href="/admin/depart/">设备类型管理</a></li></br>
 	<li><a href="/admin/showsolution/">故障处理方法管理</a></li></br>
 	<li><a href="/admin/addsolution/">新增故障解决方法</a></li></br>
-	<li><a href="/admin/logout/" style="background-color:red;color:white;">注销登录</a></li></br>
-	<li><a href="/girl/index/" style="background-color:red;color:white;">看美女</a></li></br>
+	{#<li><a href="/admin/logout/" style="background-color:red;color:white;">注销登录</a></li></br>#}
     </ul>
+    </div>
 {% endblock %}

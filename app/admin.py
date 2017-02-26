@@ -1,14 +1,20 @@
 #encoding=utf8
 from app import db
-from flask import Blueprint,render_template, request,redirect,url_for,flash
-from flask_login import login_required, login_user,logout_user
+from flask import Blueprint,render_template, request,redirect,url_for,flash,Markup,g
+from flask_login import login_required, login_user,logout_user,current_user
 from models import User,DepartmentType,Solution
 admin = Blueprint('admin',__name__)
+
+
+@admin.before_request  
+def before_request():  
+    g.user = current_user 
 
 @admin.route('/')
 @login_required
 def index():
-    return render_template('admin/index.html')
+    user = g.user
+    return render_template('admin/index.html',user=user)
 
 @admin.route('/login/', methods=['GET', 'POST'])
 def login():
@@ -36,7 +42,7 @@ def depart():
     
     p_departname = request.form.get('departtype',None)
     if not p_departname:
-	return 'no input'
+	return Markup('<p>no input,%s</p>'%('<a style="text-decoration:none;font-size:20px;" href="/admin/depart/">Click Back</a>'))
     fac_obj = DepartmentType(departname=p_departname)
     db.session.add(fac_obj)
     db.session.commit()
@@ -51,12 +57,14 @@ def add():
         return render_template('admin/addsolution.html',title='Add Solution',factories=factories)
     
     p_factory_id = request.form.get('select_factory',None)
-    print p_factory_id
+    #print p_factory_id
     if not int(p_factory_id):
 	flash(u'请选择设备供应商')
     	return render_template('admin/addsolution.html',title='Add Solution',factories=factories)
     p_troublename = request.form.get('p_troublename',None)
     p_solution = request.form.get('p_solution',None)
+    if p_troublename == 'describe trouble' or p_solution == 'make solution':
+	flash(u'请输入有效内容')
     solution_obj = Solution(troublename=p_troublename,solution=p_solution,type_id=p_factory_id)
     db.session.add(solution_obj)
     db.session.commit()

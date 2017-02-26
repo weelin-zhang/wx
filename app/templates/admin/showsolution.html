@@ -2,8 +2,9 @@
 
 {% block content  %}
     <h1>故障及处理方法</h1>
-    <button style="margin-bottom:10px"><a href="/admin/addsolution/">新增</a></button>
-    <button style="margin-bottom:10px"><a href="/admin/" style="color:#00EC00">首页</a></button>
+    <a href="/admin/addsolution/"><button style="margin-bottom:10px;color:blue;font-weight:blod">新增条目</button></a>
+    <a href="/admin/"><button style="margin-bottom:10px;color:red;"font-weight:bold;;margin-left:20px;">返回首页</button></a>
+    <a href="/admin/logout/" onclick="return confirm('确定登出?')"><button>注销登录</button></a>
     <table border=1px;>
     {% if record %}
         <tr>

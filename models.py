@@ -36,12 +36,25 @@ class Solution(db.Model):
     def __repr__(self):
         return self.troublename
 
-@login_manager.user_loader
-def load_user(user_id):
-    user=User.query.get(int(user_id))
-    return user
+#class Log(db.Model):
+#    __tablename__ = 'log'
+#    __table_args__ = {"useexisting": True}
+#    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+#    user = db.Column(db.String(30))
+#    behaviour = db.Column(db.Text(),nullable=False)
+#    occurtime =  db.Column(db.DateTime, default=db.func.now())
+#    def __repr__(self):
+#        return self.user
 
+#@login_manager.user_loader
+#def load_user(user_id):
+#    user=User.query.get(int(user_id))
+#    return user
 
 
 if __name__=='__main__':
     db.create_all()
+    log = Log(user='w',behaviour='fuck you',occurtime='23')
+    db.Session.add(log)
+    db.Session.commit()
+  

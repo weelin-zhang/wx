@@ -1,17 +1,26 @@
 #encoding=utf8
 from flask import request,redirect,render_template
-from app import app,db
+from app import app,db,login_manager
 from .admin import admin
 from .girl import girl
-app.register_blueprint(admin,url_prefix='/admin')
+from .blog import blog
 import re,time,json
 from .plugs.face import ImageInfoFormat 
 from .plugs import send,receive,search_music,weather,qiushibaike
 from .plugs import models
+from models import User
 pic_info_save_dict={}
+
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    user=User.query.get(int(user_id))
+    return user
 
 app.register_blueprint(admin,url_prefix='/admin')
 app.register_blueprint(girl,url_prefix='/girl')
+app.register_blueprint(blog,url_prefix='/blog')
 
 @app.route('/')
 def home():
