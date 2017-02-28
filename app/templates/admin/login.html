@@ -1,22 +1,22 @@
-{% extends 'admin/basebak.html' %}
+<!DOCTYPE html>  
+<html lang="en">  
+<head>  
+    <meta charset="UTF-8">  
+    <title>Login</title>  
+    <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='css/Login.css')}}"/>  
+</head>  
+<body>  
+    <div id="login">  
+        <h1>Login</h1>  
+        <form action={{url_for('admin.login')}} method="post">  
+            <input type="text" required="required" placeholder="用户名" name="username"></input>  
+            <input type="password" required="required" placeholder="密码" name="password"></input>
+	    {% for message in get_flashed_messages()[0:1] %}
+               <span style="color:red;font-weight:bold;font-size:12px"> {{ message }}</span>
+  	     {% endfor %} 
+            <button class="but" type="submit">登录</button>  
+        </form>  
+    </div>  
+</body>  
+</html>   
 
-{% block content  %}
-
-<div class="login" style="margin:0 auto">
-<form action='/admin/login/' method='POST'>
-    <p style="margin-left:20px;background-color:red;width:95%;color:white;font-size:30px;">请登录</p>
-    <div style="margin-left:20px">
-    <strong>Username:</strong>
-    <input type='text' name='username' placeholder='请输入用户名' style="width:180px"/></br>
-    </div>
-    <div style="margin-top:10px;margin-left:20px">
-	<strong style="margin-top:100px;">Password:</strong>
-        <input type='Password' name='password' placeholder='请输入密码' style="width:180px"/> <span class="status_message">{{message}}</span>
-        </br></br>
-    	<input type='submit' value='登录' style="width:150px;background-color:green;color:white;margin-left:35px;">
-   </div>
-    
-</form>
-
-<div>
-{% endblock %}

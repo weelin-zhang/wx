@@ -27,6 +27,7 @@
         {% endfor %}
 	{% else %}
 	    <p>还没有任何记录,<a href="/admin/addsolution/">现在添加</a></p>    
+	    {#<p>还没有任何记录,<a href={{url_for('admin.add')}}>现在添加</a></p>#}    
     {% endif %}
     </table>
 {% endblock %}

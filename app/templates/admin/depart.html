@@ -1,12 +1,15 @@
-{% extends 'base.html' %}
+{% extends 'admin/basebak.html' %}
 
 {% block content  %}
 
-<form action='/admin/depart/' method='POST'>
+<form action={{url_for('admin.depart')}} method='POST'>
     <h1>设备厂商管理</h1>
     <span>设备厂商:</span><input type='text' name='departtype' placeholder='设备厂商'/>
     </br></br>
     <input type='submit' value='添加' style="margin-left:60px;width:50px">
+    {% for message in get_flashed_messages()[0:1] %}
+               <span style="color:red;font-weight:bold;font-size:12px"> {{ message }}</span>
+   {% endfor %}
 </form>
 </br><a href="/admin/"><button style="margin-left:60px;color:#00EC00;">首页</button></a></br>
 {% endblock %}

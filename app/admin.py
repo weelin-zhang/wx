@@ -24,8 +24,8 @@ def login():
         username, pwd = request.form.get('username',None), request.form.get('password',None)
         user = User.query.filter_by(username=username,password=pwd).first()
         if not user:
-            #flash(u'用户名密码不正确')
-            return render_template('admin/login.html',message=u'用户名密码不正确')
+            flash(u'用户名密码不正确')
+            return render_template('admin/login.html')
         login_user(user)
 	return redirect(request.args.get('next') or url_for('admin.index'))
     return render_template('admin/login.html',message='')
@@ -49,7 +49,7 @@ def depart():
     fac_obj = DepartmentType(departname=p_departname)
     db.session.add(fac_obj)
     db.session.commit()
-    #flash(u'添加成功')
+    flash(u'添加成功')
     return render_template('admin/depart.html',title='Department Manager',user=user)
 
 @admin.route('/addsolution/',methods=['POST','GET'])
@@ -88,14 +88,14 @@ def edit(solution_id):
 @login_required
 def update(solution_id):
     user = g.user
-    p_troublename = request.form.get('p_troublename',None,user=user)
+    p_troublename = request.form.get('p_troublename',None)
     p_solution = request.form.get('p_solution',None)
     if not p_troublename or not p_solution:
         return u'更新失败'
     obj = Solution.query.filter_by(id=int(solution_id)).first()
     obj.troublename, obj.solution = p_troublename, p_solution
     db.session.commit()
-    return redirect(url_for('admin.show'),user=user)
+    return redirect(url_for('admin.show'))
 
 @admin.route('/deletesolution/<int:solution_id>/')
 @login_required
@@ -104,7 +104,7 @@ def delete(solution_id):
     obj = Solution.query.filter_by(id=int(solution_id)).first()
     db.session.delete(obj)
     db.session.commit()
-    return redirect(url_for('admin.show'),user=user)
+    return redirect(url_for('admin.show'))
 
 
 @admin.route('/showsolution/')
@@ -129,7 +129,7 @@ def show():
 #@login_required
 def weather():
     city = request.form.get('cur_city')
-    print 'ddd',city
+    #print 'ddd',city
     info = wh.get_weather_info(city)
     d_d = {'info': info}
     return json.dumps(d_d)
