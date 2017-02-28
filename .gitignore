@@ -99,5 +99,7 @@ ENV/
 *.pyc
 *.log
 *.swp
+*.swn
+*.swo
 app/templates/girl/selfcheck.html
 app/static/dujiajiyi.mp3
