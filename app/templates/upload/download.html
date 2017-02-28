@@ -1,0 +1,16 @@
+{% extends 'base.html'%}
+{% block content %}
+
+    <div>
+        {% if files %}
+            <h2 style="margin-left:10%;">可下载文件列表:</h2>
+	<strong><hr/></strong>
+        {% for file in files %}
+            <a href="/upload/download/{{file}}" style="margin-left:10%">{{file}}</a></br>
+        {% endfor %}
+        {% else %}
+            <strong>暂时无可下载资源</strong>
+        {% endif %}
+    </div>
+
+{% endblock %}

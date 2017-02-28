@@ -1,0 +1,30 @@
+{% extends 'base.html'%}
+{% block content %}
+
+    <div>
+        {% if uploadtypes %}
+            <span style="background-color:red;color:black;font-size:15px;">&nbsp;支持上传类型:
+                    {% for type in uploadtypes %}
+                        <span>{{ type }}</span>
+                    {% endfor %}(不能有中文)
+            </span>
+
+        {% endif %}
+        {% for message in get_flashed_messages()[0:1] %}
+            <span style="color:red;font-weight:bold;font-size:12px"> &nbsp;{{ message }}</span>
+        {% endfor %}
+        <form enctype="multipart/form-data" action="/upload/up/" method="POST">
+            <div style="margin-left:10px">
+		<input type="file" name="upload_file"/></br>
+                <input type="submit" value='开始上传'/>
+            </div>
+	        {#<span class="status_msg" style="color:red">{{status}}</span>
+	        {% for message in get_flashed_messages()[0:1] %}
+                   <span style="color:red;font-weight:bold;font-size:12px"> {{ message }}</span>
+                {% endfor %}
+	#}
+
+        </form>
+    </div>
+
+{% endblock %}

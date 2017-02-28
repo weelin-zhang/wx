@@ -2,7 +2,7 @@
 import requests
 import re
 import sys
-
+import json
 #reload(sys)
 #sys.setdefaultencoding('utf-8')
 PAGE_NUM = 2
@@ -14,6 +14,7 @@ post_regex = re.compile(r'<div class="postDesc">(.*?)<a.*')
 read_count_regex = re.compile(r'.*?\((\d*).')
 
 def get_blog_info():
+        print 'once'
         titles_l,urls_l = [],[]
         for i in range(PAGE_NUM):
             tmp_titles_l,tmp_urls_l = [],[]

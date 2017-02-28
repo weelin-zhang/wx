@@ -1,0 +1,83 @@
+{% extends "bootstrap/base.html" %}
+{% block title %}后台管理首页{% endblock %}
+{% block navbar %}
+<div class="navbar navbar-inverse" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle"data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/" style="color:white"><strong>W_WebSite</strong></a>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="/admin/" style="background-color:black;color:blue">设备故障管理</a></li>
+                <li><a href="/blog/">Weelin_area</a></li>
+                <li><a style="background-color:black;color:red" href="/girl/">Girl</a></li>
+                <li><a href="/upload/">upload</a></li>
+                <li><a href="/upload/index/" style="background-color:black;color:yellow">download</a></li>
+                <li><a id="weather" href="#" onclick="WeatherInfo()"></a></li>;
+                <li><a href="/admin/logout/" style="background-color:black;color:red">注销登录</a></li>
+		{% if user %}
+		    <li><a href="#">{{user.username}},logined</a></li>
+		{% endif %}
+     		<li><a id="jnkc" href="#" style="color:white"></a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+     {#<span id="jnkc" href="#" style="color:white;float:right;right:10px;font-size:20px;position:absolute;top:50px"></span>#}
+{% endblock %}
+
+{% block content %}
+
+    {% block scripts %}
+        {{super()}}
+	<script src="/static/js/jquery/jquery.js"></script>
+	<script src=""{{url_for('static', filename='js/jquery/jquery.js')}}""></script>
+	<script src="/static/js/jquery/jquery.cookie.js"></script>
+        <script src="http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=js"></script>
+        <script>
+        var city = remote_ip_info['city'];
+	if(city){
+	    document.getElementById('weather').innerText=city;
+	    console.log(city)
+	}
+	else{
+            document.getElementById('weather').innerText='获取当前城市失败';
+            console.log('未知')
+        }
+	/*show date*/
+        /*setInterval("jnkc.innerHTML=new Date().toLocaleString()+' 星期'+'日一二三四五六'.charAt(new Date().getDay());",1000);*/
+        setInterval("jnkc.innerHTML=new Date().toLocaleString();",1000);
+
+	/*ajax,获取天气信息*/
+	
+	function WeatherInfo(){
+
+	    var city = document.getElementById('weather').innerText;
+            console.log('in ajax') 	
+	    $.ajax(
+	    {
+		    url:'/admin/weather/',
+		    type:'POST',
+		    data:{cur_city:city},
+		    success:function(arg){
+			var res = jQuery.parseJSON(arg);
+			console.log('ajax 提交 success');
+			console.log(res.info);
+			alert(res.info)
+		    },
+		    error:function(arg){
+			console.log('ajax 提交 fail');
+
+		   },
+		} 
+		)
+	}
+	</script>
+{% endblock %}
+{% endblock %}

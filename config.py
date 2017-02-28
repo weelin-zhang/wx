@@ -3,6 +3,11 @@ DEBUG = True
 SECRET_KEY = 'zhangweijian'
 SQLALCHEMY_DATABASE_URI = 'mysql://root:weelin@127.0.0.1/wx'
 SQLALCHEMY_TRACK_MODIFICATIONS = True
+
+ALLOWED_EXTENSIONS = ['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif']
+UPLOAD_FOLDER = '/home/weelin/python/my_envs/wx/app/upload'
+
+BLOG_INFO = []
 HUMOR_KEYS = ['1']
 MUSIC_KEYS = ['2']
 WEATHER_KEYS = ['3']

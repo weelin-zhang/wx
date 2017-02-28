@@ -1,8 +1,10 @@
 #encoding=utf8
+import json
 from app import db
 from flask import Blueprint,render_template, request,redirect,url_for,flash,Markup,g
 from flask_login import login_required, login_user,logout_user,current_user
 from models import User,DepartmentType,Solution
+from .plugs import weather as wh
 admin = Blueprint('admin',__name__)
 
 
@@ -23,7 +25,7 @@ def login():
         user = User.query.filter_by(username=username,password=pwd).first()
         if not user:
             #flash(u'用户名密码不正确')
-            return render_template('admin/login.html',title='Login Page',message=u'用户名密码不正确')
+            return render_template('admin/login.html',message=u'用户名密码不正确')
         login_user(user)
 	return redirect(request.args.get('next') or url_for('admin.index'))
     return render_template('admin/login.html',message='')
@@ -37,8 +39,9 @@ def logout():
 @admin.route('/depart/',methods=['POST','GET'])
 @login_required
 def depart():
+    user = g.user
     if request.method != 'POST':
-        return render_template('admin/depart.html',title='Department Manager')
+        return render_template('admin/depart.html',title='Department Manager',user=user)
     
     p_departname = request.form.get('departtype',None)
     if not p_departname:
@@ -47,20 +50,21 @@ def depart():
     db.session.add(fac_obj)
     db.session.commit()
     #flash(u'添加成功')
-    return render_template('admin/depart.html',title='Department Manager')
+    return render_template('admin/depart.html',title='Department Manager',user=user)
 
 @admin.route('/addsolution/',methods=['POST','GET'])
 @login_required
 def add():
+    user = g.user
     factories = DepartmentType.query.all()
     if request.method != 'POST':
-        return render_template('admin/addsolution.html',title='Add Solution',factories=factories)
+        return render_template('admin/addsolution.html',title='Add Solution',factories=factories,user=user)
     
     p_factory_id = request.form.get('select_factory',None)
     #print p_factory_id
     if not int(p_factory_id):
 	flash(u'请选择设备供应商')
-    	return render_template('admin/addsolution.html',title='Add Solution',factories=factories)
+    	return render_template('admin/addsolution.html',title='Add Solution',factories=factories,user=user)
     p_troublename = request.form.get('p_troublename',None)
     p_solution = request.form.get('p_solution',None)
     if p_troublename == 'describe trouble' or p_solution == 'make solution':
@@ -69,40 +73,44 @@ def add():
     db.session.add(solution_obj)
     db.session.commit()
     flash(u'添加成功')
-    return render_template('admin/addsolution.html',title='Add Solution',factories=factories) 
+    return render_template('admin/addsolution.html',title='Add Solution',factories=factories,user=user) 
    
 @admin.route('/editsolution/<int:solution_id>/')
 @login_required
 def edit(solution_id):
+    user = g.user
     obj = Solution.query.filter_by(id=int(solution_id)).first()
-    return render_template('admin/editsolution.html',title="Update Solution",Solution=obj)
+    return render_template('admin/editsolution.html',title="Update Solution",Solution=obj,user=user)
 
 
 
 @admin.route('/updatesolution/<int:solution_id>/',methods=['POST'])
 @login_required
 def update(solution_id):
-    p_troublename = request.form.get('p_troublename',None)
+    user = g.user
+    p_troublename = request.form.get('p_troublename',None,user=user)
     p_solution = request.form.get('p_solution',None)
     if not p_troublename or not p_solution:
         return u'更新失败'
     obj = Solution.query.filter_by(id=int(solution_id)).first()
     obj.troublename, obj.solution = p_troublename, p_solution
     db.session.commit()
-    return redirect(url_for('admin.show'))
+    return redirect(url_for('admin.show'),user=user)
 
 @admin.route('/deletesolution/<int:solution_id>/')
 @login_required
 def delete(solution_id):
+    user = g.user
     obj = Solution.query.filter_by(id=int(solution_id)).first()
     db.session.delete(obj)
     db.session.commit()
-    return redirect(url_for('admin.show'))
+    return redirect(url_for('admin.show'),user=user)
 
 
 @admin.route('/showsolution/')
 @login_required
 def show():
+    user = g.user
     record_is_exists = False
     data_l = []
     solution_d={}
@@ -115,4 +123,14 @@ def show():
         solution_d['style'] = 'style_'+str(styleindex)
         data_l.append(solution_d)
     #print record_is_exists
-    return render_template('admin/showsolution.html',title="Show Solutions",datas=data_l,record=record_is_exists)
+    return render_template('admin/showsolution.html',title="Show Solutions",datas=data_l,record=record_is_exists,user=user)
+
+@admin.route('/weather/',methods=['POST'])
+#@login_required
+def weather():
+    city = request.form.get('cur_city')
+    print 'ddd',city
+    info = wh.get_weather_info(city)
+    d_d = {'info': info}
+    return json.dumps(d_d)
+    

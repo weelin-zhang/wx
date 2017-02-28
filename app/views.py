@@ -1,10 +1,11 @@
 #encoding=utf8
+import re,time,json
 from flask import request,redirect,render_template
 from app import app,db,login_manager
 from .admin import admin
 from .girl import girl
 from .blog import blog
-import re,time,json
+from .upload import upload 
 from .plugs.face import ImageInfoFormat 
 from .plugs import send,receive,search_music,weather,qiushibaike
 from .plugs import models
@@ -21,6 +22,7 @@ def load_user(user_id):
 app.register_blueprint(admin,url_prefix='/admin')
 app.register_blueprint(girl,url_prefix='/girl')
 app.register_blueprint(blog,url_prefix='/blog')
+app.register_blueprint(upload,url_prefix='/upload')
 
 @app.route('/')
 def home():
