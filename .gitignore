@@ -103,3 +103,4 @@ ENV/
 *.swo
 app/templates/girl/selfcheck.html
 app/static/dujiajiyi.mp3
+app/upload

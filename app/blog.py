@@ -21,8 +21,19 @@ def index():
 
 
 
-@blog.route('/logout/')
+
+
+@blog.route('/chart/',methods=['POST'])
 @login_required
-def logout():
-    logout_user()
-    return redirect(url_for('admin.login'),user=g.user)
+def chart():
+    if request.method == 'POST':
+        info = blog_info.get_blogchart_info()
+        blog_title, blog_lengend, blog_xaxis = '访问量',['访问量'],info[0]
+        blog_series = {'name': '访问量',
+                       'type': 'bar',
+                       'data': info[1]
+                       }
+        d_dict = {'title': blog_title,'legend': blog_lengend, 'xAxis': blog_xaxis, 'series': blog_series}
+    return json.dumps(d_dict)
+
+

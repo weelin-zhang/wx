@@ -1,4 +1,5 @@
 {% extends "bootstrap/base.html" %}
+{% block head %}{{super()}}<link href="/static/css/blog.css" rel="stylesheet" type="text/css" />{% endblock %}
 {% block title %}后台管理首页{% endblock %}
 {% block navbar %}
 <div class="navbar navbar-inverse" role="navigation">
@@ -33,17 +34,17 @@
 {% endblock %}
 
 {% block content %}
-
     {% block scripts %}
         {{super()}}
 	<script src="/static/js/jquery/jquery.js"></script>
 	<script src=""{{url_for('static', filename='js/jquery/jquery.js')}}""></script>
 	<script src="/static/js/jquery/jquery.cookie.js"></script>
+        <script src='/static/js/echarts.min.js'></script>
         <script src="http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=js"></script>
         <script>
-        var city = remote_ip_info['city'];
+        city = remote_ip_info['city'];
 	if(city){
-	    document.getElementById('weather').innerText=city;
+	    document.getElementById('weather').innerText=city+'天气';
 	    console.log(city)
 	}
 	else{
@@ -58,7 +59,7 @@
 	
 	function WeatherInfo(){
 
-	    var city = document.getElementById('weather').innerText;
+	    /*var city = document.getElementById('weather').innerText;*/
             console.log('in ajax') 	
 	    $.ajax(
 	    {

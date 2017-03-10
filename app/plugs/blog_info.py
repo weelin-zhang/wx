@@ -14,7 +14,6 @@ post_regex = re.compile(r'<div class="postDesc">(.*?)<a.*')
 read_count_regex = re.compile(r'.*?\((\d*).')
 
 def get_blog_info():
-        print 'once'
         titles_l,urls_l = [],[]
         for i in range(PAGE_NUM):
             tmp_titles_l,tmp_urls_l = [],[]
@@ -33,6 +32,23 @@ def get_blog_info():
 	    d_l.append(tmp_d)
         return d_l
 
+
+def get_blogchart_info():
+        titles_l,posts_l = [],[]
+        for i in range(PAGE_NUM):
+            tmp_titles_l,tmp_posts_l = [],[]
+            url = base_url+'%s'%(int(i)+1)
+            r = requests.get(url)
+            html = r.text
+            tmp_titles_l = re.findall(title_regex,html)
+            tmp_posts_l = re.findall(post_regex,html)
+            titles_l.extend(tmp_titles_l)
+            posts_l.extend(tmp_posts_l)
+        count_l = []
+        for post in posts_l:
+                count = re.search(read_count_regex,post.split()[5]).group(1)
+                count_l.append(int(count))
+        return titles_l,count_l
 
 
 if __name__=='__main__':

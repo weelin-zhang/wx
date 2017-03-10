@@ -21,7 +21,7 @@
                 <td><a href="/admin/editsolution/{{solution.id}}/">编辑</a></td>
                 <td>{{data.departname}}</td>
                 <td>{{solution.troublename}}</td>
-                <td>{{solution.solution}}</td>
+                <td class="method">{{solution.solution}}</td>
             </tr>
             {% endfor %}    
         {% endfor %}
@@ -30,4 +30,5 @@
 	    {#<p>还没有任何记录,<a href={{url_for('admin.add')}}>现在添加</a></p>#}    
     {% endif %}
     </table>
+
 {% endblock %}

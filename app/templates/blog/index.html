@@ -1,14 +1,63 @@
 {% extends 'base.html' %}
 
 {% block content  %}
-    <div style="margin-left:10px;">
+    <div style="margin-left:10px;float:left;">
     <p style="margin-left:20px;background-color:red;width:50%;color:white;font-size:25px;">Blog List</p>
     <ul style="">
 	{% for blog in blogs %}
-	<li><a href={{blog.url}} target="_blank">{{blog.title}}</a></li></br>
+	<li><a href={{blog.url}} target="_blank">{{blog.title}}</a></li>
 	{% endfor %}
     </ul>
     </div>
+<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+    <div id="main">
+    <button id='blog' class="get_demo" onclick="GETECHARG(this)">blog阅读情况</button>
+    </div>
+    <script type="text/javascript">
+        function GETECHARG(dom){
+            $.ajax(
+            {
+                url:'/blog/chart/',
+                type:'POST',
+                success:function(arg){
+                    console.log('ajax 提交 success');
+                    var res = jQuery.parseJSON(arg);
+                        // 基于准备好的dom，初始化echarts实例
+                        var myChart = echarts.init(document.getElementById('main'));
+                        // 指定图表的配置项和数据
+			    console.log(res.title)
+                            var option = {
+                                    title: {
+                                        text: res.title
+                                    },
+                                    tooltip: {},
+                                    legend: {
+                                        data: res.legend
+                                    },
+                                    xAxis: {
+                                        data: res.xAxis
+                                    },
+                                    yAxis: {},
+                                    series: [{
+                                        name: res.series.name,
+                                        type: res.series.type,
+                                        radius: res.series.radius,
+                                        data: res.series.data
+                                    }]
+                                };
+
+                        // 使用刚指定的配置项和数据显示图表。
+                        myChart.setOption(option);
+                },
+                error:function(arg){
+                    console.log('ajax 提交 fail');
+                },
+	}
+
+        );
+        }
+
+    </script>
 
 
 {% endblock %}
